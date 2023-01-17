@@ -4,7 +4,7 @@ import Taskmenu from './component/taskmenu';
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Taskmenu/>
     </div>
   );

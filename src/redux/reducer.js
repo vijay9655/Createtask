@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 var initial={
     getdata:[],
+    userdetail:[],
     Addtask:[],
     updatetask:[],
     deletetask:[]
@@ -13,17 +14,21 @@ const reducer=(state=initial,action)=>{
             return{
                 ...state,getdata:action.payload
             }
+        case 'Getuserdet':
+            return{
+                ...state,userdetail:action.payload
+            }
         case 'Addtask':
             return{
-                ...state
+                ...state,Addtask:action.payload
             }
         case 'Updatetask':
             return{
-                ...state
+                state,updatetask:action.payload
             }
         case 'Deletetask':
             return{
-                ...state
+                state,deletetask:action.payload
             }
         default:
             return state
