@@ -20,13 +20,18 @@ function Taskmenu() {
    
     const dispatch=useDispatch()
     const{Addtask}=useSelector((state)=>state.data)
-    console.log(Addtask.results)
+    console.log(Addtask?.results)
     const Getauth=()=>{
+      console.log('enter');
         axios.post('https://stage.api.sloovi.com/login?product=outreach',{
         email : "vopevo7737@vpsrec.com",
         password : "12345678"
+      },{
+        "Content-Type": "application/json"
+       
       }
       ).then((res)=>{
+        console.log('auth',res)
 
         setData(res.data)
 
@@ -44,7 +49,6 @@ function Taskmenu() {
                 }
               }
            await axios.get(`https://stage.api.sloovi.com/task/lead_745cdc05ef6a43f7985e408c85a4fef1?company_id=${data.results.company_id}`,config).then((res)=>{
-                
                 setGetalltask(res.data)
               }).catch((e)=>{
                 console.log('error',e);
@@ -125,7 +129,7 @@ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(
     if(data){
         let config = {
             headers: {
-              'Authorization': 'Bearer ' + `${data.results.token}`
+              'Authorization': 'Bearer ' + `${data.results?.token}`
             }
           }
         axios.put(`https://stage.api.sloovi.com/task/lead_745cdc05ef6a43f7985e408c85a4fef1/<task_id>?company_id=${data.results?.company_id}`,submitdata,config).then((res)=>{
@@ -133,6 +137,7 @@ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(
             // setUserdet(res.data)
             setSaveview(false)
             setEditview(true)
+            setUpdateview(false)
             dispatch({type:'Addtask',payload:res.data})
 
           }).catch((e)=>{
@@ -141,7 +146,7 @@ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(
     }
   };
   const onFinishFailed1 = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log('Failed1:', errorInfo);
   };
 
  const viewhandle=()=>{
@@ -167,7 +172,7 @@ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(
     setEditview(true)
  }
  const deletedata=async()=>{
-        
+        console.log('delete');
     let config = {
         headers: {
           'Authorization': 'Bearer ' + `${data.results?.token}`
@@ -175,7 +180,9 @@ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds(
       }
    await axios.delete(`https://stage.api.sloovi.com/task/lead_745cdc05ef6a43f7985e408c85a4fef1/<task_id>?company_id=${data.results?.company_id}`,config).then((res)=>{
         console.log('res users',res)
-        
+        setSaveview(false)
+        setUpdateview(false)
+        setEditview(false)
         dispatch({type:'Deletetask',payload:res.data})
       }).catch((e)=>{
         console.log('error',e);
@@ -349,7 +356,7 @@ placement='topLeft'             style={{
            <p>{Addtask.results?.task_date}</p>
 
             </MDBCol>
-            <MDBCol size='4' className="mb-4 mt-3" style={{textAlign:'center',}}>
+            <MDBCol size='4' className="mb-4 mt-3" style={{textAlign:'center'}}>
 
              <span style={{cursor:'pointer'}} onClick={viewhandle1}><EditOutlined/></span>
             </MDBCol>
@@ -394,7 +401,7 @@ placement='topLeft'             style={{
       >
      
      <DatePicker 
-    //  defaultValue={Addtask.results?.task_date}
+   
      placement='topLeft'             style={{
                 width: '100%',
               }}
@@ -416,7 +423,7 @@ placement='topLeft'             style={{
         ]}
       >
             <TimePicker
-            // defaultValue={Addtask.results?.task_time}
+            
       use12Hours
       format="HH:mm"
       
